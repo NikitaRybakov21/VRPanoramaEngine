@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pluse123"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            app:cornerRadius="8dp"
+            android:layout_marginStart="16dp"
+            android:text="P"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/minuse123"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            app:cornerRadius="8dp"
+            android:layout_marginStart="16dp"
+            android:text="M"/>
+    </LinearLayout>
+
+
+
+</FrameLayout>
