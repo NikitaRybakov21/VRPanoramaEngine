@@ -1,5 +1,8 @@
 package com.example.vrpanoramaengine.view;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -45,12 +48,17 @@ public class TouchMap {
 
          //   map3D.getCurrentCamera().setLookAt(newVector3look);
 
-            map3D.getCurrentCamera().rotate(Vector3.Axis.Y,deltaX * 1);
 
-            double look = map3D.getCurrentCamera().getRotY();
-            Log.d("", "VVV rote y" + look);
-          //  Vector3 vector3 = new Vector3(look.x,look.y,0);
-          //  map3D.getCurrentCamera().rotate(vector3,-deltaY * 1);
+
+            double radian = map3D.getCurrentCamera().getRotY();
+
+            double x = 1 * cos(radian - 2*(Math.PI / 2f));
+            double y = 1 * sin(radian - 2*(Math.PI / 2f));
+
+            Log.d("", "VVV rote y" + radian);
+
+            map3D.getCurrentCamera().rotate(Vector3.Axis.Y,deltaX * 1);
+            map3D.getCurrentCamera().rotate(new Vector3(x,0,y),-deltaY * 1);
         }
         return true;
     }
