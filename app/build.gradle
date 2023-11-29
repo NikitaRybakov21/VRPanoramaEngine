@@ -39,4 +39,7 @@ dependencies {
 
     //3d
     implementation 'org.rajawali3d:rajawali:1.1.970'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
 }
