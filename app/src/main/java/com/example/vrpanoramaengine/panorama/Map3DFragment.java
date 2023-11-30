@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,8 +32,6 @@ public class Map3DFragment extends Base3DFragment implements View.OnTouchListene
 
 	private SphericalPanoramaRender renderClass;
 	private TouchMap touchMap;
-
-	private int currentIndex = -1;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,54 +64,54 @@ public class Map3DFragment extends Base3DFragment implements View.OnTouchListene
 
 
 		view.findViewById(R.id.right).setOnClickListener(v -> {
-			currentIndex++;
-			renderClass.setPanorama(currentIndex);
+			renderClass.nextPanorama();
 		});
 
 		view.findViewById(R.id.left).setOnClickListener(v -> {
-			currentIndex--;
-			renderClass.setPanorama(currentIndex);
+			renderClass.lastPanorama();
 		});
 	}
 
 	@Override
     public Renderer createRenderer() {
-
-		ArrayList<Bitmap> listBitmap = new ArrayList<>();
-
 		if(renderClass == null) {
-			renderClass = new SphericalPanoramaRender(getActivity(), this,listBitmap);
+			renderClass = new SphericalPanoramaRender(getActivity(), this);
 		}
 		touchMap = new TouchMap(renderClass);
-
-
-		Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.panorama1);
-		listBitmap.add(bitmap);
-
-		Bitmap bitmap2 = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.panorama2);
-		listBitmap.add(bitmap2);
-
-		Bitmap bitmap3 = BitmapFactory.decodeResource(getResources(), R.drawable.panorama3);
-		listBitmap.add(bitmap3);
-
-
-		Glide.with(this)
-				.asBitmap()
-				.load("https://pilothub.ru/datas/folio/10000_5000_auto/6725-vologda--ul-burmaginyx.jpg")
-				.into(new CustomTarget<Bitmap>() {
-
-					@Override
-					public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-						renderClass.createNewSphere(resource);
-					}
-
-					@Override
-					public void onLoadCleared(@Nullable Drawable placeholder) {
-
-					}
-				});
+		loadPanorama();
 
 		return renderClass;
+	}
+
+	private void loadPanorama() {
+
+		ArrayList<String> urlPanorama = new ArrayList<>();
+		urlPanorama.add("https://pilothub.ru/datas/folio/10000_5000_auto/6725-vologda--ul-burmaginyx.jpg");
+		urlPanorama.add("https://pilothub.ru/datas/folio/10000_5000_auto/10188-fok-zvezdnyj-bashkortostan-leto-2019-panorama-360.jpg");
+		urlPanorama.add("https://pilothub.ru/datas/folio/10000_5000_auto/3412-moskva-leto-nagatinskaya-ul.jpg");
+		urlPanorama.add("https://pilothub.ru/datas/folio/10000_5000_auto/2529-skolkovo-business-school.jpg");
+		urlPanorama.add("https://upload.wikimedia.org/wikipedia/commons/b/b4/IMG_0265_Panorama_out.jpg");
+
+		ArrayList<Bitmap> bitmaps = new ArrayList<>();
+		for (int i = 0; i < urlPanorama.size(); i++) {
+			String url = urlPanorama.get(i);
+			Glide.with(this).asBitmap().load(url).into(new CustomTarget<Bitmap>() {
+				@Override
+				public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+					bitmaps.add(resource);
+					if(bitmaps.size() == urlPanorama.size()) {
+
+						for (int j = 0; j < bitmaps.size(); j++) {
+							renderClass.addPanorama(bitmaps.get(j),"panorama" + j);
+						}
+						renderClass.setPanoramaOfIndex(0);
+						Toast.makeText(getContext(), "Load panorama success", Toast.LENGTH_SHORT).show();
+					}
+				}
+				@Override
+				public void onLoadCleared(@Nullable Drawable placeholder) {}
+			});
+		}
 	}
 
 	@Override

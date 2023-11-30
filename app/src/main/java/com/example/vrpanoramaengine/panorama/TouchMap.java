@@ -22,8 +22,8 @@ public class TouchMap {
 
         if(motionEvent.getAction() == 2) {
 
-            float deltaX = (motionEvent.getX() - tempX) / 40f;
-            float deltaY = - (motionEvent.getY() - tempY) / 40f;
+            float deltaX = (motionEvent.getX() - tempX) / 25f;
+            float deltaY = - (motionEvent.getY() - tempY) / 25f;
 
             tempX = motionEvent.getX();
             tempY = motionEvent.getY();
