@@ -209,6 +209,12 @@ public class PanoramaRender extends Renderer implements OnObjectPickedListener {
         }
     }
 
+    public void rotateScenePanoramaAxisXSpec(double radian) {
+        if(currentPanoramaScene != null) {
+            currentPanoramaScene.rotateSceneAxisXSpec(radian);
+        }
+    }
+
     public void rotateArrow(double angle) {
         currentPanoramaScene.correctAngleDegree(angle);
     }

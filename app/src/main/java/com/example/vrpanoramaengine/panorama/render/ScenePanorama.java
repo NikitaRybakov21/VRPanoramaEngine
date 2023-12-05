@@ -32,6 +32,34 @@ public class ScenePanorama {
         });
     }
 
+    public void rotateSceneAxisXSpec(double radian) {
+      //  double camRotX = sphere.getRotX();
+     //   double boundAngle = PI / 2.1;
+
+   //     if((camRotX - radian >= -boundAngle) && (camRotX - radian <= boundAngle) ) {
+            sphere.rotate(Vector3.Axis.X, -radian);
+
+            arrow3dList.forEach(arrow3d -> {
+                arrow3d.rotate(Vector3.Axis.X, -radian);
+            });
+  /*      } else {
+            if(camRotX - radian < 0) {
+                sphere.rotate(Vector3.Axis.X, -(boundAngle) - camRotX);
+
+                arrow3dList.forEach(arrow3d -> {
+                    arrow3d.rotate(Vector3.Axis.X, -(boundAngle) - camRotX);
+                });
+            } else {
+                sphere.rotate(Vector3.Axis.X, (boundAngle) - camRotX);
+
+                arrow3dList.forEach(arrow3d -> {
+                    arrow3d.rotate(Vector3.Axis.X, (boundAngle) - camRotX);
+                });
+            }
+        }*/
+    }
+
+
     public void rotateSceneAxisX(double radian) {
         double camRotX = sphere.getRotX();
         double boundAngle = PI / 2.1;

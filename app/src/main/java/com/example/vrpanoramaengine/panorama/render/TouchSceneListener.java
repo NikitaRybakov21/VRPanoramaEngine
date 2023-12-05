@@ -5,10 +5,10 @@ import android.view.View;
 
 public class TouchSceneListener {
 
-    private final PanoramaRender map3D;
+    private final PanoramaRender scene3D;
 
-    public TouchSceneListener(PanoramaRender map3D) {
-        this.map3D = map3D;
+    public TouchSceneListener(PanoramaRender scene3D) {
+        this.scene3D = scene3D;
     }
 
     float tempX = 0;
@@ -20,23 +20,23 @@ public class TouchSceneListener {
             tempX = motionEvent.getX();
             tempY = motionEvent.getY();
 
-            map3D.touchDown(motionEvent.getX(),motionEvent.getY());
+            scene3D.touchDown(motionEvent.getX(),motionEvent.getY());
         }
 
         if(motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
 
-            float deltaX = (motionEvent.getX() - tempX) / 25f;
-            float deltaY = - (motionEvent.getY() - tempY) / 25f;
+            float deltaX = (motionEvent.getX() - tempX) / 20f;
+            float deltaY = - (motionEvent.getY() - tempY) / 20f;
 
             tempX = motionEvent.getX();
             tempY = motionEvent.getY();
 
-            map3D.rotateScenePanoramaAxisX(deltaY);
-            map3D.rotateScenePanoramaAxisY(deltaX);
+            scene3D.rotateScenePanoramaAxisX(deltaY);
+            scene3D.rotateScenePanoramaAxisY(deltaX);
         }
 
         if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            map3D.touchUp(motionEvent.getX(),motionEvent.getY());
+            scene3D.touchUp(motionEvent.getX(),motionEvent.getY());
         }
 
         return true;

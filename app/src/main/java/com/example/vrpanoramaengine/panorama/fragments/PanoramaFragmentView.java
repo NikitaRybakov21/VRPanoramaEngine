@@ -1,6 +1,7 @@
 package com.example.vrpanoramaengine.panorama.fragments;
 
 import android.annotation.SuppressLint;
+import android.hardware.SensorListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,8 +18,10 @@ import androidx.cardview.widget.CardView;
 import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;
 
+import com.example.vrpanoramaengine.MainActivity;
 import com.example.vrpanoramaengine.R;
 import com.example.vrpanoramaengine.panorama.render.PanoramaRender;
+import com.example.vrpanoramaengine.panorama.render.RotateSceneInertialSensorListener;
 import com.example.vrpanoramaengine.panorama.render.TouchSceneListener;
 import com.example.vrpanoramaengine.panorama.model.Scene;
 
@@ -31,11 +34,13 @@ import java.util.ArrayList;
 public class PanoramaFragmentView extends BaseFragment implements View.OnTouchListener , PanoramaRender.FrameCallback {
 	private PanoramaRender renderClass;
 	private TouchSceneListener touchMap;
+	private RotateSceneInertialSensorListener sensorListener;
 	private ArrayList<Scene> scenes = new ArrayList<>();
 	private String currentNameScene;
 	private CallbackPanorama callbackPanorama;
 	private int currentSceneIndex = 0;
 	private boolean isFullScreenMode;
+	private boolean isRotateActive = true;
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +61,7 @@ public class PanoramaFragmentView extends BaseFragment implements View.OnTouchLi
 	public Renderer createRenderer() {
 		renderClass = new PanoramaRender(getActivity(),scenes,currentNameScene,this);
 		touchMap = new TouchSceneListener(renderClass);
+		sensorListener = new RotateSceneInertialSensorListener(renderClass, (MainActivity) requireActivity());
 		return renderClass;
 	}
 
@@ -133,6 +139,20 @@ public class PanoramaFragmentView extends BaseFragment implements View.OnTouchLi
 
 		view.findViewById(R.id.splitButton).setOnClickListener(view1 -> {
 			callbackPanorama.changeSplit();
+		});
+
+		ImageView rotateImage = view.findViewById(R.id.rotateImage);
+		view.findViewById(R.id.rotateButton).setOnClickListener(v -> {
+			isRotateActive = !isRotateActive;
+			initView(view);
+
+			if(isRotateActive) {
+				sensorListener.sensorEnabled();
+				rotateImage.setImageResource(R.drawable.baseline_screen_rotation_24);
+			} else {
+				sensorListener.sensorDisabled();
+				rotateImage.setImageResource(R.drawable.baseline_screen_lock_rotation_24);
+			}
 		});
 	}
 
